@@ -1,0 +1,41 @@
+.devices {
+    max-width: 900px;
+    margin: 1rem auto;
+    padding: 1rem;
+    border: 1px solid #f1f1f1;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12) !important;
+    table {
+        width: 100%;
+        th {
+            font-weight: 700;
+            font-size: 16px;
+        }
+    }
+    .mat-toolbar-single-row {
+        height: auto !important;
+        background: transparent;
+    }
+    .mat-toolbar-single-row button {
+        width: 200px;
+    }
+    mat-form-field {
+        width: 100%;
+        #uploadFile {
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            z-index: 9;
+            opacity: 0;
+            height: 100%;
+            cursor: pointer;
+            position: absolute;
+        }
+    }
+    .export-btn {
+        float: right;
+        margin-top: 10px;
+    }
+    .clear {
+        clear: both;
+    }
+}

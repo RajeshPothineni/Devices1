@@ -1,0 +1,88 @@
+<mat-toolbar color="primary">
+  <span>Devices</span>
+</mat-toolbar>
+
+<div class="devices">
+  <form [formGroup]="deviceForm">
+  <mat-form-field>
+    <div>
+      <mat-toolbar>
+        <!-- Display files names -->
+        <input matInput  formControlName="fileName" readonly name="fileName" />
+
+        <!-- Browse Button -->
+        <button mat-flat-button color="primary">
+          Browse XML File
+        </button>
+      </mat-toolbar>
+
+      <!-- Fetch selected filed on change -->
+      <input type="file" #fileInput id="uploadFile" (change)="uploadFileEvt($event)" calss="file-upload" name="uploadFile"
+        accept="xml" />
+
+    </div>
+  </mat-form-field>
+
+  <mat-form-field appearance="standard" class="pms_font_family_gotham">
+    <mat-icon matPrefix>search</mat-icon>
+    <input matInput [disabled]="devices.data.length < 1" (keyup)="applyFilter($event)" placeholder="Device id..." #input>
+  </mat-form-field>
+
+</form>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="devices">
+
+      <!-- Checkbox Column -->
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <!-- deviceId Column -->
+      <ng-container matColumnDef="deviceId">
+          <th mat-header-cell *matHeaderCellDef> Device Id </th>
+          <td mat-cell *matCellDef="let element"> {{element.deviceId}} </td>
+      </ng-container>
+
+      <!-- Channel Column -->
+      <ng-container matColumnDef="channel">
+          <th mat-header-cell *matHeaderCellDef> Channel </th>
+          <td mat-cell *matCellDef="let element"> {{element.channel}}</td>
+      </ng-container>
+
+      <!-- startTime Column -->
+      <ng-container matColumnDef="startTime">
+          <th mat-header-cell *matHeaderCellDef> Start Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.startTime | date: 'MM/dd/yyyy hh:mm a'}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+      <!-- endTime Column -->
+      <ng-container matColumnDef="endTime">
+          <th mat-header-cell *matHeaderCellDef> End Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.endTime | date: 'MM/dd/yyyy hh:mm a'}} </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns; let i = index;" (click)="selection.toggle(row)"></tr>
+    </table>
+  </div>
+
+  <button mat-raised-button *ngIf="selection.selected.length" class="export-btn" color="primary" (click)="exportXML()">Export</button>
+  <div class="clear"></div>
+</div>
